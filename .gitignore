@@ -1,0 +1,4 @@
+node_modules/
+backend_ai/node_modules/
+mern_ai/node_modules/
+.env

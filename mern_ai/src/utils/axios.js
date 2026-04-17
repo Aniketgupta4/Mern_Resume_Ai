@@ -1,7 +1,7 @@
 import axios from 'axios';
 
 const instance = axios.create({
-    baseURL: 'http://localhost:4000', // Replace with your backend URL
+    baseURL: 'https://mern-resume-ai.onrender.com', // Replace with your backend URL
 });
 
 export default instance;

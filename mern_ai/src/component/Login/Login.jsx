@@ -9,7 +9,6 @@ import { useNavigate } from 'react-router-dom';
 import axios from '../../utils/axios';
 
 const Login = () => {
-    // isLogin state nikal diya kyunki wo is component mein use nahi ho raha tha
     const { setLogin, setUserInfo } = useContext(AuthContext); 
     const navigate = useNavigate();
 
@@ -24,13 +23,12 @@ const Login = () => {
                 photoURL: user.photoURL
             };
 
-            await axios.post('api/user',userData).then((response)=>{
+            await axios.post('api/user', userData).then((response)=>{
                 setUserInfo(response.data.user);
                 localStorage.setItem('userInfo', JSON.stringify(response.data.user)); 
             }).catch((err)=>{
                 console.error("Error during user registration/login:", err);
             });
-
 
             setLogin(true);
             localStorage.setItem('isLogin', true);
@@ -44,18 +42,20 @@ const Login = () => {
 
     return (
         <div className={styles.Login}>
-            {/* White theme applied via your Login.module.css */}
             <div className={styles.loginCard}>
                 <div className={styles.loginCardTitle}>
                     <h1>Login</h1>
-                    <VpnKeyIcon />
+                    <VpnKeyIcon sx={{ color: "rgba(255,255,255,0.7)" }} />
                 </div>
 
-                {/* Fixed onClick handler (Direct Reference) */}
-                <div className={styles.googleBtn} onClick={handleLogin}>
-                    <GoogleIcon sx={{ fontSize: 20, color: "red" }} /> 
-                    Sign in with Google
+                <div className={styles.loginSubtitle}>
+                    Welcome back! Please sign in to continue.
                 </div>
+
+                <button className={styles.googleBtn} onClick={handleLogin}>
+                    <GoogleIcon sx={{ fontSize: 22, color: "#EA4335" }} /> 
+                    <span>Sign in with Google</span>
+                </button>
             </div>
         </div>
     );

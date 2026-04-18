@@ -31,7 +31,7 @@ const SideBar = () => {
         <div className={styles.sideBarTopContent}>Resume AI</div>
       </div>
 
-      {/* Navigation Options */}
+      {/* Navigation Options - Pura Ek Block Bana Diya */}
       <div className={styles.sideBarOptionsBlock}>
         <Link 
           to="/dashboard" 
@@ -58,10 +58,8 @@ const SideBar = () => {
             <span>Admin</span>
           </Link>
         )}
-      </div>
 
-      {/* Logout Section (Pushed to bottom on desktop) */}
-      <div className={styles.logoutBlock}>
+        {/* Logout Button Ab Isi Flex Block Ke Andar Hai */}
         <div onClick={handleLogout} className={`${styles.sideBarOption} ${styles.logoutOption}`}>
           <LogoutIcon sx={{ fontSize: 24 }} /> 
           <span>Logout</span>

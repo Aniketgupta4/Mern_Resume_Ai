@@ -1,7 +1,7 @@
 /* Main Sidebar Container */
 .sideBar {
-    width: 260px; /* Fixed width instead of flex ratio for better control */
-    background-color: #0f172a; /* Premium dark slate color matching login */
+    width: 260px; 
+    background-color: #0f172a; 
     border-right: 1px solid rgba(255, 255, 255, 0.05);
     color: #94a3b8;
     height: 100vh;
@@ -47,6 +47,7 @@
     gap: 8px;
     padding: 0 16px;
     flex: 1; /* Pushes logout to the bottom */
+    padding-bottom: 20px;
 }
 
 /* Individual Option */
@@ -89,24 +90,25 @@
     border-radius: 0 4px 4px 0;
 }
 
-/* Logout Section */
-.logoutBlock {
-    padding: 20px 16px;
+/* Magic Trick: Logout ko hamesha neeche rakhne ke liye */
+.logoutOption {
+    margin-top: auto; 
     border-top: 1px solid rgba(255, 255, 255, 0.05);
+    padding-top: 20px;
 }
 
 .logoutOption:hover {
-    background-color: rgba(239, 68, 68, 0.1); /* Slight red tint for logout */
+    background-color: rgba(239, 68, 68, 0.1); 
     color: #ef4444;
 }
 
 /* =========================================
-   MOBILE RESPONSIVENESS (Magic Happens Here)
+   MOBILE RESPONSIVENESS 
    ========================================= */
 @media screen and (max-width: 768px) {
     .sideBar {
         width: 100vw;
-        height: 70px; /* Fixed height for bottom nav */
+        height: 70px; 
         position: fixed;
         bottom: 0;
         left: 0;
@@ -117,8 +119,8 @@
         padding: 0;
     }
 
-    /* Hide the top logo on mobile */
-    .sideBarIcon, .logoutBlock {
+    /* Sirf logo hide hoga, options nahi */
+    .sideBarIcon {
         display: none; 
     }
 
@@ -135,11 +137,11 @@
 
     /* Adjust options for bottom nav */
     .sideBarOption {
-        flex-direction: column; /* Icon up, text down */
+        flex-direction: column; 
         gap: 4px;
         padding: 10px 0;
         border-radius: 0;
-        font-size: 12px; /* Smaller text */
+        font-size: 12px; 
         width: 100%;
         justify-content: center;
     }
@@ -160,5 +162,12 @@
         height: 3px;
         width: 30%;
         border-radius: 0 0 4px 4px;
+    }
+
+    /* Reset Logout styling for Mobile */
+    .logoutOption {
+        margin-top: 0;
+        border-top: none;
+        padding-top: 10px;
     }
 }

@@ -33,7 +33,8 @@ const frontendDistPath = path.join(__dirname, '../mern_ai/dist');
 app.use(express.static(frontendDistPath));
 
 // Agar user kisi bhi URL par jaye (jo api route na ho), toh React ka index.html dikhao
-app.get('*', (req, res) => {
+// SAHI (Yeh sab versions mein mast chalega)
+app.get(/(.*)/, (req, res) => {
   res.sendFile(path.join(frontendDistPath, 'index.html'));
 });
 

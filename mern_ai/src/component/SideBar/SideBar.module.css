@@ -1,8 +1,12 @@
-/* Main Sidebar Container */
+@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap');
+
+/* =========================================
+   DESKTOP SIDEBAR
+   ========================================= */
 .sideBar {
-    width: 260px; 
-    background-color: #0f172a; 
-    border-right: 1px solid rgba(255, 255, 255, 0.05);
+    width: 280px; /* Slightly wider for a more premium feel */
+    background-color: #0f172a; /* Deep slate */
+    border-right: 1px solid rgba(255, 255, 255, 0.08);
     color: #94a3b8;
     height: 100vh;
     flex-shrink: 0;
@@ -10,54 +14,56 @@
     flex-direction: column;
     box-sizing: border-box;
     transition: all 0.3s ease;
+    font-family: 'Plus Jakarta Sans', system-ui, sans-serif;
 }
 
 /* Logo Section */
 .sideBarIcon {
-    padding: 30px 20px;
+    padding: 32px 24px;
     display: flex;
     align-items: center;
-    gap: 15px;
-    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+    gap: 16px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.06);
 }
 
 .logoCircle {
-    background: linear-gradient(135deg, #3b82f6, #2563eb);
-    width: 45px;
-    height: 45px;
-    border-radius: 12px;
+    background: linear-gradient(135deg, #4f46e5, #2563eb);
+    width: 48px;
+    height: 48px;
+    border-radius: 14px;
     display: flex;
     justify-content: center;
     align-items: center;
-    box-shadow: 0 4px 10px rgba(59, 130, 246, 0.3);
+    box-shadow: 0 8px 16px -4px rgba(79, 70, 229, 0.4);
+    flex-shrink: 0;
 }
 
 .sideBarTopContent {
-    font-size: 22px;
-    font-weight: 700;
-    color: white;
+    font-size: 24px;
+    font-weight: 800;
+    color: #ffffff;
     letter-spacing: -0.5px;
 }
 
 /* Options Container */
 .sideBarOptionsBlock {
-    margin-top: 20px;
+    margin-top: 24px;
     display: flex;
     flex-direction: column;
     gap: 8px;
     padding: 0 16px;
     flex: 1; /* Pushes logout to the bottom */
-    padding-bottom: 20px;
+    padding-bottom: 24px;
 }
 
 /* Individual Option */
 .sideBarOption {
     padding: 14px 20px;
     display: flex;
-    gap: 15px;
+    gap: 16px;
     align-items: center;
-    font-size: 16px;
-    font-weight: 500;
+    font-size: 15px;
+    font-weight: 600;
     cursor: pointer;
     color: #cbd5e1;
     text-decoration: none;
@@ -67,59 +73,77 @@
 
 /* Hover Effect */
 .sideBarOption:hover {
-    background-color: rgba(255, 255, 255, 0.05);
-    color: white;
-    transform: translateX(4px);
+    background-color: rgba(255, 255, 255, 0.06);
+    color: #ffffff;
 }
 
 /* Selected/Active State */
 .selectedOption {
-    background: rgba(59, 130, 246, 0.1);
-    color: #3b82f6;
+    background: rgba(79, 70, 229, 0.15); /* Soft Indigo */
+    color: #818cf8; /* Light Indigo */
     position: relative;
 }
 
 .selectedOption::before {
     content: '';
     position: absolute;
-    left: 0;
-    top: 15%;
-    height: 70%;
+    left: -16px; /* Touches the left edge of the sidebar */
+    top: 50%;
+    transform: translateY(-50%);
+    height: 60%;
     width: 4px;
-    background-color: #3b82f6;
+    background-color: #818cf8;
     border-radius: 0 4px 4px 0;
 }
 
-/* Magic Trick: Logout ko hamesha neeche rakhne ke liye */
+/* Logout Option (Pushed to bottom) */
 .logoutOption {
     margin-top: auto; 
-    border-top: 1px solid rgba(255, 255, 255, 0.05);
-    padding-top: 20px;
+    border-top: 1px solid rgba(255, 255, 255, 0.06);
+    padding-top: 24px;
+    border-radius: 0; /* Remove border radius for top border to look clean */
+    border-bottom-left-radius: 12px;
+    border-bottom-right-radius: 12px;
 }
 
 .logoutOption:hover {
-    background-color: rgba(239, 68, 68, 0.1); 
-    color: #ef4444;
+    background-color: transparent;
+    color: #ef4444; /* Soft Red */
 }
 
 /* =========================================
-   MOBILE RESPONSIVENESS 
+   TABLET RESPONSIVENESS (iPads)
+   ========================================= */
+@media screen and (max-width: 990px) {
+    .sideBar {
+        width: 240px; /* Slightly thinner on tablets */
+    }
+    
+    .sideBarIcon {
+        padding: 24px 20px;
+    }
+}
+
+/* =========================================
+   MOBILE BOTTOM NAVIGATION (Smartphones)
    ========================================= */
 @media screen and (max-width: 768px) {
     .sideBar {
         width: 100vw;
-        height: 70px; 
+        height: auto; /* Let padding define height */
         position: fixed;
         bottom: 0;
         left: 0;
         flex-direction: row;
         z-index: 1000;
         border-right: none;
-        border-top: 1px solid rgba(255, 255, 255, 0.1);
-        padding: 0;
+        background-color: #0f172a;
+        /* Safe area padding for modern phones (like iPhone Home Bar) */
+        padding: 8px 0 calc(8px + env(safe-area-inset-bottom)); 
+        box-shadow: 0 -4px 20px rgba(0, 0, 0, 0.2);
     }
 
-    /* Sirf logo hide hoga, options nahi */
+    /* Hide the top logo on mobile */
     .sideBarIcon {
         display: none; 
     }
@@ -130,7 +154,7 @@
         padding: 0;
         flex-direction: row;
         justify-content: space-around;
-        align-items: center;
+        align-items: stretch; /* Stretch to fill height */
         width: 100%;
         gap: 0;
     }
@@ -138,29 +162,34 @@
     /* Adjust options for bottom nav */
     .sideBarOption {
         flex-direction: column; 
-        gap: 4px;
-        padding: 10px 0;
-        border-radius: 0;
-        font-size: 12px; 
+        gap: 6px;
+        padding: 10px 4px;
+        border-radius: 12px;
+        font-size: 11px; 
+        font-weight: 600;
         width: 100%;
         justify-content: center;
+        color: #94a3b8;
     }
 
     .sideBarOption:hover {
         transform: none;
-        background-color: transparent;
+        background-color: rgba(255, 255, 255, 0.05);
     }
 
     /* Mobile Active State */
     .selectedOption {
         background: transparent;
+        color: #818cf8;
     }
 
+    /* Top dot/line indicator for mobile */
     .selectedOption::before {
-        left: 35%;
-        top: 0;
+        left: 50%;
+        top: -8px; /* Moves above the icon */
+        transform: translateX(-50%);
         height: 3px;
-        width: 30%;
+        width: 24px;
         border-radius: 0 0 4px 4px;
     }
 
@@ -169,5 +198,6 @@
         margin-top: 0;
         border-top: none;
         padding-top: 10px;
+        border-radius: 12px;
     }
 }

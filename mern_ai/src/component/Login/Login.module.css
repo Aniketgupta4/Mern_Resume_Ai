@@ -1,3 +1,5 @@
+@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap');
+
 /* Main Background Overlay */
 .Login {
     position: fixed;
@@ -5,30 +7,34 @@
     left: 0;
     width: 100vw;
     height: 100vh;
-    background: rgba(15, 23, 42, 0.6); /* Slightly darker for better contrast */
-    backdrop-filter: blur(12px);
-    -webkit-backdrop-filter: blur(12px); /* Safari support */
+    /* Sleeker, highly polished backdrop */
+    background: rgba(15, 23, 42, 0.45); 
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px); 
     display: flex;
     justify-content: center;
     align-items: center;
-    z-index: 1000;
+    z-index: 9999; /* Ensures it stays on top of absolutely everything */
     padding: 20px;
     box-sizing: border-box;
+    font-family: 'Plus Jakarta Sans', system-ui, sans-serif;
+    animation: fadeInOverlay 0.3s ease-out forwards;
 }
 
-/* Premium Login Card */
+/* Premium Dark Login Card */
 .loginCard {
-    background-color: #0f172a; /* Deep sleek dark background */
-    padding: 40px 35px;
+    /* Subtle gradient for a richer dark mode feel */
+    background: linear-gradient(145deg, #0f172a, #1e293b);
+    padding: 48px 40px;
     width: 100%;
-    max-width: 420px; /* Adapts to all screens perfectly */
+    max-width: 420px; 
     border-radius: 24px;
     color: white;
-    /* Soft glow and subtle border for modern UI */
-    box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5), inset 0 1px 0 rgba(255, 255, 255, 0.1);
+    /* Apple/Stripe-style smooth shadow + ultra-thin inner border */
+    box-shadow: 0 30px 60px -12px rgba(0, 0, 0, 0.6), 0 0 0 1px rgba(255, 255, 255, 0.08);
     display: flex;
     flex-direction: column;
-    animation: slideUp 0.4s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+    animation: slideUpModal 0.5s cubic-bezier(0.16, 1, 0.3, 1) forwards;
 }
 
 /* Header Section */
@@ -36,83 +42,101 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
-    margin-bottom: 8px;
+    margin-bottom: 12px;
 }
 
 .loginCardTitle h1 {
     margin: 0;
-    font-size: 28px;
-    font-weight: 700;
-    letter-spacing: -0.5px;
+    font-size: 32px;
+    font-weight: 800;
+    letter-spacing: -1px;
+    color: #ffffff;
 }
 
 .loginSubtitle {
     color: #94a3b8;
-    font-size: 14px;
+    font-size: 15px;
     margin-bottom: 40px;
-    line-height: 1.5;
+    line-height: 1.6;
+    font-weight: 500;
 }
 
-/* Enhanced Google Button */
+/* Official-looking Google Button */
 .googleBtn {
     padding: 16px 20px;
     width: 100%;
     background-color: #ffffff;
-    color: #1e293b;
-    border: none;
-    border-radius: 12px;
+    color: #0f172a;
+    border: 1px solid #e2e8f0;
+    border-radius: 14px;
     font-size: 16px;
-    font-weight: 600;
+    font-weight: 700;
     font-family: inherit;
     display: flex;
     justify-content: center;
     align-items: center;
     gap: 12px;
     cursor: pointer;
-    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
-    transition: all 0.2s ease-in-out;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .googleBtn:hover {
     background-color: #f8fafc;
+    border-color: #cbd5e1;
     transform: translateY(-2px);
-    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+    box-shadow: 0 10px 20px -5px rgba(0, 0, 0, 0.1);
 }
 
 .googleBtn:active {
     transform: translateY(0);
-    box-shadow: 0 2px 4px -1px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 2px 4px -1px rgba(0, 0, 0, 0.05);
 }
 
-/* Entrance Animation */
-@keyframes slideUp {
+/* =========================================
+   ANIMATIONS
+   ========================================= */
+@keyframes fadeInOverlay {
     from {
         opacity: 0;
-        transform: translateY(30px);
     }
     to {
         opacity: 1;
-        transform: translateY(0);
     }
 }
 
-/* Mobile Responsiveness */
+@keyframes slideUpModal {
+    from {
+        opacity: 0;
+        transform: translateY(40px) scale(0.96);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+    }
+}
+
+/* =========================================
+   MOBILE RESPONSIVENESS
+   ========================================= */
 @media screen and (max-width: 480px) {
     .loginCard {
-        padding: 30px 25px;
+        padding: 36px 24px;
         border-radius: 20px;
     }
 
     .loginCardTitle h1 {
-        font-size: 24px;
+        font-size: 28px;
     }
 
     .loginSubtitle {
-        margin-bottom: 30px;
+        margin-bottom: 32px;
+        font-size: 14px;
     }
 
     .googleBtn {
         font-size: 15px;
         padding: 14px 20px;
+        border-radius: 12px;
     }
 }

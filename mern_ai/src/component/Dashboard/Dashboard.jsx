@@ -5,11 +5,12 @@ import Skeleton from '@mui/material/Skeleton';
 import WithAuthHOC from '../../utils/HOC/withAuthHOC';
 import axios from '../../utils/axios';
 import { AuthContext } from '../../utils/AuthContext';
-import CloudUploadIcon from '@mui/icons-material/CloudUpload';
+import CloudUploadOutlinedIcon from '@mui/icons-material/CloudUploadOutlined';
 import AutoAwesomeIcon from '@mui/icons-material/AutoAwesome';
+import InfoOutlinedIcon from '@mui/icons-material/InfoOutlined';
 
 const Dashboard = () => {
-  const [uploadFileText, setUploadFileText] = useState("Upload Your Resume (PDF)");
+  const [uploadFileText, setUploadFileText] = useState("Click to browse or drag PDF here");
   const [loading, setLoading] = useState(false);
   const [resumeFile, setResumeFile] = useState(null);
   const [jobDesc, setJobDesc] = useState("");
@@ -39,7 +40,6 @@ const Dashboard = () => {
 
     try {
       const result = await axios.post('/api/resume/addResume', formData);
-      console.log(result.data);
       setResult(result.data.data);
     } catch (err) {
       console.log(err);
@@ -53,72 +53,86 @@ const Dashboard = () => {
     <div className={styles.Dashboard}>
       <div className={styles.DashboardLeft}>
         <div className={styles.DashboardHeader}>
-          <div className={styles.DashboardHeaderTitle}>Smart Resume Screening</div>
-          <div className={styles.DashboardHeaderLargeTitle}>Resume Match Score</div>
+          <div className={styles.badge}>Powered by AI</div>
+          <div className={styles.DashboardHeaderLargeTitle}>Smart Resume Screening</div>
+          <p className={styles.subtitle}>Upload your resume and the target job description to get deep, actionable insights.</p>
         </div>
 
+        {/* Premium Soft Alert Box */}
         <div className={styles.alertInfo}>
-          <div className={styles.alertHeader}>⚠️ Important Instructions :</div>
-          <div className={styles.dashboardInstruction}>
-            <div>📄 Please paste the complete job description in the "Job Description" field.</div>
-            <div>📑 Only PDF format (.pdf) resumes are accepted.</div>
+          <div className={styles.alertHeader}>
+            <InfoOutlinedIcon sx={{ fontSize: 20 }} />
+            Instructions
           </div>
+          <ul className={styles.dashboardInstruction}>
+            <li>Please paste the complete job description in the text field below.</li>
+            <li>Currently, only PDF format (.pdf) resumes are accepted by the analyzer.</li>
+          </ul>
         </div>
 
+        {/* Modern Interactive Drop Zone */}
         <div className={styles.uploadSection}>
-          <div className={styles.DashboardResumeBlock}>
-            {uploadFileText}
-          </div>
-          <div className={styles.DashboardInputField}>
-            <label htmlFor="inputField" className={styles.uploadBtn}>
-              <CloudUploadIcon sx={{ fontSize: 20 }} />
-              Upload Resume
-            </label>
-            <input type="file" accept=".pdf" id="inputField" onChange={handleOnChangeFile} />
-          </div>
+          <label htmlFor="inputField" className={styles.dropZone}>
+            <div className={styles.dropZoneIconWrapper}>
+              <CloudUploadOutlinedIcon sx={{ fontSize: 32, color: "#4f46e5" }} />
+            </div>
+            <div className={styles.dropZoneText}>{uploadFileText}</div>
+            <div className={styles.dropZoneSubtext}>PDF up to 5MB</div>
+          </label>
+          <input type="file" accept=".pdf" id="inputField" onChange={handleOnChangeFile} />
         </div>
 
+        {/* Sleek Input Area */}
         <div className={styles.jobDesc}>
-          <textarea 
-            value={jobDesc} 
-            onChange={(e) => setJobDesc(e.target.value)} 
-            className={styles.textArea} 
-            placeholder='Paste the target Job Description here...' 
-            rows={8} 
-          />
+          <div className={styles.inputWrapper}>
+            <label className={styles.inputLabel}>Job Description</label>
+            <textarea 
+              value={jobDesc} 
+              onChange={(e) => setJobDesc(e.target.value)} 
+              className={styles.textArea} 
+              placeholder='e.g. We are looking for a Software Engineer with 3+ years of experience...' 
+              rows={6} 
+            />
+          </div>
           <button className={styles.AnalyzeBtn} onClick={handleUpload} disabled={loading}>
-            <AutoAwesomeIcon sx={{ fontSize: 24 }} />
-            {loading ? "Analyzing..." : "Analyze AI"}
+            <AutoAwesomeIcon sx={{ fontSize: 20 }} />
+            {loading ? "Analyzing Profile..." : "Analyze Match"}
           </button>
         </div>
       </div>
 
+      {/* Right side Profile & Results */}
       <div className={styles.DashboardRight}>
         <div className={styles.DashboardRightTopCard}>
-          <div className={styles.cardTitle}>Profile</div>
-          <img
-            className={styles.profileImg}
-            src={userInfo?.photoUrl || "https://cdn-icons-png.flaticon.com/512/149/149071.png"}
-            alt="User Profile"
-          />
+          <div className={styles.cardTitle}>Profile Overview</div>
+          <div className={styles.profileWrapper}>
+            <img
+              className={styles.profileImg}
+              src={userInfo?.photoUrl || "https://cdn-icons-png.flaticon.com/512/149/149071.png"}
+              alt="User Profile"
+            />
+          </div>
           <h2 className={styles.userName}>{userInfo?.name}</h2>
+          <p className={styles.userEmail}>{userInfo?.email}</p>
         </div>
 
         {loading && (
           <div className={styles.skeletonCard}>
-            <Skeleton variant="rectangular" sx={{ borderRadius: "20px" }} width="100%" height={280} />
+            <Skeleton variant="rectangular" animation="wave" sx={{ borderRadius: "20px" }} width="100%" height={320} />
           </div>
         )}
 
         {result && !loading && (
-          <div className={styles.DashboardRightTopCard}>
-            <div className={styles.cardTitle}>AI Result</div>
-            <div className={styles.scoreBlock}>
-              <h1>{result?.score}%</h1>
-              <CreditScoreIcon sx={{ fontSize: 32, color: "#10b981" }} />
+          <div className={styles.ResultCard}>
+            <div className={styles.cardTitle}>AI Match Result</div>
+            <div className={styles.scoreCircle}>
+              <div className={styles.scoreInner}>
+                <h1>{result?.score}%</h1>
+                <span>Match</span>
+              </div>
             </div>
             <div className={styles.feedback}>
-              <h3>Feedback</h3>
+              <h3>Detailed Feedback</h3>
               <p>{result?.feedback}</p>
             </div>
           </div>

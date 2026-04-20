@@ -8,11 +8,17 @@ import EventNoteOutlinedIcon from '@mui/icons-material/EventNoteOutlined';
 import InsertDriveFileOutlinedIcon from '@mui/icons-material/InsertDriveFileOutlined';
 import AutoAwesomeIcon from '@mui/icons-material/AutoAwesome';
 import FileDownloadOutlinedIcon from '@mui/icons-material/FileDownloadOutlined';
+import ArrowBackIosNewIcon from '@mui/icons-material/ArrowBackIosNew';
+import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
 import html2pdf from 'html2pdf.js';
 
 const History = () => {
   const [data, setData] = useState([]);
   const [loader, setLoader] = useState(false);
+  
+  // Pagination States
+  const [page, setPage] = useState(1);
+  const [totalPages, setTotalPages] = useState(1);
 
   const { userInfo } = useContext(AuthContext);
 
@@ -20,9 +26,14 @@ const History = () => {
     const fetchUserData = async () => {
       setLoader(true);
       try {
-        const results = await axios.get(`/api/resume/get/${userInfo._id}`);
-        // Reverse so latest is first
-        setData(results.data.resumes.reverse());
+        // Backend ko page aur limit=5 bhej rahe hain
+        const results = await axios.get(`/api/resume/get/${userInfo._id}?page=${page}&limit=5`);
+        
+        setData(results.data.resumes);
+        setTotalPages(results.data.totalPages || 1);
+        
+        // Naya page load hote hi upar scroll kare
+        window.scrollTo({ top: 0, behavior: 'smooth' });
       } catch (err) {
         console.log(err);
         alert("Error fetching history data. Please try again later.");
@@ -31,7 +42,11 @@ const History = () => {
       }
     }
     fetchUserData();
-  }, []);
+  }, [page, userInfo._id]); // Page change hone par fetch karega
+
+  // Pagination Handlers
+  const handlePrevPage = () => { if (page > 1) setPage(page - 1); };
+  const handleNextPage = () => { if (page < totalPages) setPage(page + 1); };
 
   const handleDownloadPDF = (item) => {
     const element = document.createElement('div');
@@ -41,7 +56,6 @@ const History = () => {
                 <h1 style="color: #0f172a; margin: 0; font-size: 28px; font-weight: 800; letter-spacing: -0.5px;">AI Resume Analysis Report</h1>
                 <p style="color: #64748b; margin-top: 8px; font-size: 14px;">Generated on ${new Date().toLocaleDateString()}</p>
             </div>
-            
             <table style="width: 100%; margin-bottom: 32px; font-size: 15px; border-collapse: collapse;">
                 <tr style="border-bottom: 1px solid #f8fafc;">
                     <td style="padding: 12px 0; color: #64748b; width: 140px; font-weight: 500;">Candidate File</td>
@@ -60,7 +74,6 @@ const History = () => {
                     </td>
                 </tr>
             </table>
-
             <div style="background: #f8fafc; padding: 24px; border-radius: 16px; border: 1px solid #e2e8f0;">
                 <h3 style="color: #0f172a; margin-top: 0; font-size: 14px; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 12px;">Detailed Feedback</h3>
                 <p style="line-height: 1.7; color: #334155; font-size: 14px; margin-bottom: 0;">
@@ -77,7 +90,6 @@ const History = () => {
         html2canvas: { scale: 2 },
         jsPDF: { unit: 'in', format: 'a4', orientation: 'portrait' }
     };
-
     html2pdf().set(opt).from(element).save();
   };
 
@@ -91,7 +103,7 @@ const History = () => {
 
       <div className={styles.HistoryCardBlock}>
         {loader && (
-          Array.from(new Array(6)).map((_, index) => (
+          Array.from(new Array(5)).map((_, index) => (
             <Skeleton key={index} variant="rectangular" sx={{ borderRadius: "20px" }} width="100%" height={280} />
           ))
         )}
@@ -104,8 +116,7 @@ const History = () => {
            </div>
         )}
 
-        {!loader && data.map((item) => {
-          return (
+        {!loader && data.map((item) => (
             <div key={item._id} className={styles.HistoryCard}>
               <div className={styles.cardHeader}>
                 <div className={styles.scoreBlock}>
@@ -132,18 +143,29 @@ const History = () => {
                   <p className={styles.customScrollbar}>{item.feedback}</p>
                 </div>
 
-                <button 
-                  className={styles.downloadBtn} 
-                  onClick={() => handleDownloadPDF(item)}
-                >
+                <button className={styles.downloadBtn} onClick={() => handleDownloadPDF(item)}>
                   <FileDownloadOutlinedIcon sx={{ fontSize: 20 }} />
                   Export Report
                 </button>
               </div>
             </div>
-          )
-        })}
+        ))}
       </div>
+
+      {/* Pagination UI */}
+      {!loader && data.length > 0 && totalPages > 1 && (
+        <div className={styles.paginationContainer}>
+            <button className={styles.pageBtn} onClick={handlePrevPage} disabled={page === 1}>
+                <ArrowBackIosNewIcon sx={{ fontSize: 14 }} /> Prev
+            </button>
+            <div className={styles.pageInfo}>
+                Page <strong>{page}</strong> of <strong>{totalPages}</strong>
+            </div>
+            <button className={styles.pageBtn} onClick={handleNextPage} disabled={page === totalPages}>
+                Next <ArrowForwardIosIcon sx={{ fontSize: 14 }} />
+            </button>
+        </div>
+      )}
     </div>
   )
 }
